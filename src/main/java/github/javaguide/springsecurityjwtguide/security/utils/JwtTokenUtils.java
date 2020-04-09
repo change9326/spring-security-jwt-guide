@@ -28,7 +28,11 @@ public class JwtTokenUtils {
 
     public static String createToken(String username, List<String> roles, boolean isRememberMe) {
         long expiration = isRememberMe ? SecurityConstants.EXPIRATION_REMEMBER : SecurityConstants.EXPIRATION;
-
+        /**
+         * 签名的生成是把header和playload分别使用base64url编码，接着用’.‘把两个编码后的字符串连接起来，
+         * 再把这拼接起来的字符串配合密钥进行HMAC SHA-256算法加密，
+         * 最后再次base64编码下，这就拿到了签名sign. 最后把header和playload和sign用’.‘ 连接起来就生成了整个JWT。
+         */
         String tokenPrefix = Jwts.builder()
                 .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
                 .signWith(secretKey, SignatureAlgorithm.HS256)

@@ -49,10 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // HttpSecurity来配置 cors，csrf，会话管理和受保护资源的规则。
         http.cors().and()
                 // 禁用 CSRF
                 .csrf().disable()
                 .authorizeRequests()
+                // permitAll() 无条件允许访问
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 // 指定路径下的资源需要验证了的用户才能访问
                 .antMatchers("/api/**").authenticated()
